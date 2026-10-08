@@ -82,3 +82,4 @@ def check_player(text, team_a, team_b, used):
     #for j in range(1, 7):
         #if i != j:
             #print(f'{i} x {j} : {sorted(SETS[i] & SETS[j])}')
+    
