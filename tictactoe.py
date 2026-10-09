@@ -93,26 +93,33 @@ def draw_field():
     player1_text = font.render(player1, True, THECOLORS['black'])
     o = font.render(f'0: ', True, blue)
     player2_text = font.render(player2, True, THECOLORS['black'])
-    screen.blit(x, (300, 70))
-    screen.blit(player1_text, (363, 70))
-    screen.blit(o, (600, 70))
-    screen.blit(player2_text, (663, 70))
+    screen.blit(x, (315, 70))
+    screen.blit(player1_text, (378, 70))
+    screen.blit(o, (615, 70))
+    screen.blit(player2_text, (678, 70))
 
     #столбцы
-    row1 = font.render('1', True, purple)
-    screen.blit(row1, (367, 140))
-    row2 = font.render('2', True, purple)
-    screen.blit(row2, (532, 140))
-    row3 = font.render('3', True, purple)
-    screen.blit(row3, (700, 140))
+    barca = pg.image.load("fcb.png").convert_alpha()
+    barca = pg.transform.scale(barca, (50, 50))
+    screen.blit(barca, (367, 140))
+    rm = pg.image.load("Real_Madrid.png").convert_alpha()
+    rm = pg.transform.scale(rm, (60, 60))
+    screen.blit(rm, (532, 130))
+    mu = pg.image.load("Manchester_United.png").convert_alpha()
+    mu = pg.transform.scale(mu, (50, 50))
+    screen.blit(mu, (700, 140))
 
     #строки
-    str1 = font.render('4', True, purple)
-    screen.blit(str1, (240, 265))
-    str2 = font.render('5', True, purple)
-    screen.blit(str2, (240, 420))
-    str3 = font.render('6', True, purple)
-    screen.blit(str3, (240, 586))
+    ch = pg.image.load("Chelsea_FC.png").convert_alpha()
+    ch = pg.transform.scale(ch, (50, 50))
+    screen.blit(ch, (240, 265))
+    psg = pg.image.load("Paris_Saint-Germain.png").convert_alpha()
+    psg = pg.transform.scale(psg, (50, 50))
+    screen.blit(psg, (240, 420))
+    ju = pg.image.load("ju.png").convert_alpha()
+    ju = pg.transform.scale(ju, (50, 50))
+    screen.blit(ju, (240, 586))
+
 
     #поле
     field = pg.Rect(300, 200, 500, 500)
@@ -126,15 +133,15 @@ def draw_field():
     pg.draw.lines(screen, THECOLORS['black'], True, points_str2, 3)
     pg.draw.lines(screen, THECOLORS['black'], True, points_row2, 3)
 
-    draw_legend()
+    #draw_legend()
     draw_turn()
 
-def draw_legend():
+"""def draw_legend():
     title = small_font.render('Teams:', True, THECOLORS['black'])
     screen.blit(title, (860, 200))
     for num, name in TEAMS.items():
         text = small_font.render(f'{num} - {name}', True, purple)
-        screen.blit(text, (860, 250 + (num - 1) * 50))
+        screen.blit(text, (860, 250 + (num - 1) * 50))"""
 
 def draw_turn():
     if winner is not None or draw:
@@ -313,7 +320,8 @@ def draw_window():
     res_surf = pg.Surface((800, 300))
     res_surf.fill(THECOLORS['white'])
     res_surf = add_border_to_surface(res_surf, THECOLORS['black'], 4)   
-    restart = font.render('press ENTER for new game', True, THECOLORS['black'])
+    line1 = font.render('press ENTER for new game', True, THECOLORS['black'])
+    line2 = font.render('or ESC to exit', True, THECOLORS['black'])
 
     
     screen.blit(res_surf, (146, 300))
@@ -322,15 +330,19 @@ def draw_window():
         res = font.render(res, True, THECOLORS['black'])
         res_rect = res.get_rect(center=(550, 400))
         screen.blit(res, res_rect)
-        restart_rect = restart.get_rect(center=(550, 520))
-        screen.blit(restart, restart_rect)
+        restart_rect = line1.get_rect(center=(550, 500))
+        screen.blit(line1, restart_rect)
+        exit_rect = line2.get_rect(center=(550, 550))
+        screen.blit(line2, exit_rect)
 
     else:
         res = font.render('draw !', True, THECOLORS['black'])
         res_rect = res.get_rect(center=(550, 400))
         screen.blit(res, res_rect)  
-        restart_rect = restart.get_rect(center=(550, 530))
-        screen.blit(restart, restart_rect) 
+        restart_rect = line1.get_rect(center=(550, 500))                
+        screen.blit(line1, restart_rect)
+        exit_rect = line2.get_rect(center=(550, 550))
+        screen.blit(line2, exit_rect)
 
 player1 = get_nickname(1)
 player2 = get_nickname(2)
@@ -350,6 +362,9 @@ while True:
                     try_move(move)
 
         if event.type == pg.KEYDOWN:
+            if event.key == pg.K_ESCAPE:
+                pg.quit()
+                sys.exit()
             if event.key == pg.K_RETURN:
                 if winner is not None or draw:
                     restart_game()
